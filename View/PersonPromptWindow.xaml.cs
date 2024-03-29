@@ -23,11 +23,15 @@ namespace Lab01Stasiuk.View
         public PersonPromptWindow()
         {
             InitializeComponent();
+
             var vm = new PersonPromptViewModel();
             DataContext = vm;
-            vm.OnStartComputingForAnalysis += (s, e) =>
+
+            vm.OnStartComputingForAnalysis += (s, e) => { IsEnabled = false; };
+            vm.OnAnalysisEndedWithError += (s, e) =>
             {
-                IsEnabled = false;
+                MessageBox.Show(this, e.Message);
+                Close();
             };
             vm.OnProceedToAnalysis += (s, e) =>
             {
@@ -37,7 +41,6 @@ namespace Lab01Stasiuk.View
                 analysisWindow.Show();
                 Close();
             };
-
         }
     }
 }

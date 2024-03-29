@@ -19,19 +19,7 @@ namespace Lab01Stasiuk.ViewModel
         public PersonInfoViewModel()
         {
             _model = Person.Instance ?? new Person("Some name", "Some surname", "example@mail.com", DateTime.Today);
-
-            var tooOld = _model.IsBirthdateOfATooOldPerson;
-            var unborn = _model.IsBirthdateOfUnbornPerson;
-
-            if (tooOld || unborn)
-            {
-                MessageBox.Show(Application.Current.MainWindow,
-                    tooOld ?
-                        "Looks like you're more than 135 years old. You're either mistaken or dead :(" :
-                        "Seems like you haven't born yet. Please come back later"
-                );
-                Application.Current.Shutdown();
-            }
+            
 
             if (_model.IsBirthday)
             {

@@ -18,12 +18,26 @@ namespace Lab01Stasiuk.ViewModel
 
         public event EventHandler? OnProceedToAnalysis;
         public event EventHandler? OnStartComputingForAnalysis;
+        public event EventHandler<ErrorEventArgs>? OnAnalysisEndedWithError;
 
         private async void ProceedToAnalysis()
         {
-            Person.Instance = new Person(Name!, Surname!, Email!, (DateTime) Birthdate!);
             OnStartComputingForAnalysis?.Invoke(this, EventArgs.Empty);
-            await Person.Instance.ComputePropertiesAsync();
+            try
+            {
+                Person.Instance = new Person(Name!, Surname!, Email!, (DateTime) Birthdate!);
+                await Person.Instance.ComputePropertiesAsync();
+            }
+            catch (ArgumentException e)
+            {
+                OnAnalysisEndedWithError?.Invoke(this, new ErrorEventArgs(e.Message));
+                return;
+            }
+            catch (FormatException e)
+            {
+                OnAnalysisEndedWithError?.Invoke(this, new ErrorEventArgs(e.Message));
+                return;
+            } 
             OnProceedToAnalysis?.Invoke(this, EventArgs.Empty);
         }
 
