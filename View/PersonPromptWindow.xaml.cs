@@ -16,18 +16,23 @@ using Lab01Stasiuk.ViewModel;
 namespace Lab01Stasiuk.View
 {
     /// <summary>
-    /// Interaction logic for BirthdatePromptWindow.xaml
+    /// Interaction logic for PersonPromptWindow.xaml
     /// </summary>
-    public partial class BirthdatePromptWindow : Window
+    public partial class PersonPromptWindow : Window
     {
-        public BirthdatePromptWindow()
+        public PersonPromptWindow()
         {
             InitializeComponent();
-            var vm = new BirthdatePromptViewModel();
+            var vm = new PersonPromptViewModel();
             DataContext = vm;
+            vm.OnStartComputingForAnalysis += (s, e) =>
+            {
+                IsEnabled = false;
+            };
             vm.OnProceedToAnalysis += (s, e) =>
             {
-                var analysisWindow = new BirthdateAnalysisWindow();
+                IsEnabled = true;
+                var analysisWindow = new PersonInfoWindow();
                 Application.Current.MainWindow = analysisWindow;
                 analysisWindow.Show();
                 Close();
